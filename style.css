@@ -1,0 +1,60 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: brown;
+}
+
+.icon::before {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.circle::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    content: "\f111";
+}
+
+
+.wrap{
+    height: 100%;
+    min-height: 100vh;
+}
+
+.navbar{
+    background-color: #4a752d;
+    height:50px;
+}
+
+.backgroundScreen{
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: calc(100vh - 50px);
+}
+
+.green.light{
+    background-color: #a9d751;
+}
+
+.green.dark{
+    background-color: #a2d049;
+}
+
+.green.light.press{
+    background-color: #e4c29f;
+}
+
+.green.dark.press{
+    background-color: #d7b899;
+}
+
+.playground span{
+    display: inline-block;
+}
