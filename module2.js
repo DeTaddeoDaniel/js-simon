@@ -3,6 +3,7 @@ $(document).ready(function () {
 startingEvent()
 });
 
+
 function startingEvent(){
     $("#modalModalita").modal({backdrop: 'static'});
 
@@ -30,7 +31,7 @@ async function preGame(){
 
     // INIZIO GIOCO
     var endGame = false;
-    var sequenza = [1,2,3];
+    var sequenza = [1,2,3,4];
 
     console.log('sequenza: '+sequenza.toString())
 
@@ -58,7 +59,8 @@ async function preGame(){
         // stampa sequenza
         console.log('sequenza: '+sequenza.toString())
         
-        return await sequenzaLuci()
+        // accendi la sequenza
+        await sequenzaLuci(sequenza);
 
         endGame = true;
     }
@@ -69,20 +71,72 @@ async function preGame(){
 }
 
 // sequenza luci illuminate
-async function sequenzaLuci(){
-    
+async function sequenzaLuci(sequenza){
+
     console.log('inizio luci in sequenza')
 
     for ( let numero of sequenza ){
-        // await accendiSequenza(numero)
-    };
+        await accendiSequenza(numero)
 
     console.log('------------------------');
     console.log('fine luci in sequenza');
 
-    // attivaInput()
-    
-    return true;
+    }
+}
+
+// accendi lampadina
+function accendiLampadina( numero ){
+
+    console.log('---------------------------')
+    console.log('Accendo lampadina: '+numero)
+
+    console.log($("#btnYellow").attr('style'))
+
+    if(numero == 1){
+        $("#btnYellow").attr('style','fill: url(#gradient-3-active)')
+    } else if(numero == 2){
+         $("#btnBlue").attr('style','fill: url(#gradient-2-active)')
+    } else if(numero == 4){
+        $("#btnRed").attr('style','fill: url(#gradient-0-active)')
+    } else if(numero == 3){
+       $("#btnGreen").attr('style','fill: url(#gradient-1-active)')
+    }
+
+}
+
+// spegni lampadina
+function spegniLampadina(numero,resolve){
+
+    console.log('Spengo lampadina: '+numero)
+
+    if(numero == 1){
+        $("#btnYellow").attr('style','fill: url(#gradient-3)')
+    } else if(numero == 2){
+        $("#btnBlue").attr('style','fill: url(#gradient-2)')
+    } else if(numero == 4){
+        $("#btnRed").attr('style','fill: url(#gradient-0)')
+    } else if(numero == 3){
+        $("#btnGreen").attr('style','fill: url(#gradient-1)')
+    }
+
+    setTimeout(resolve,600)
+
+}
+
+// accendi la sequenza di luci
+ async function accendiSequenza(numero){
+
+     console.log('accendi sequenza')
+
+    return new Promise( (resolve, reject) => {
+
+             accendiLampadina(numero)
+            
+            setTimeout( () => {
+                spegniLampadina(numero, resolve)
+            }, 1000)
+    })
+
 }
 
 function animazioneIniziale(num){
