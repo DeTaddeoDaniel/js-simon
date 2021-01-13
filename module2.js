@@ -68,7 +68,22 @@ async function preGame(){
 
 }
 
-function seq(param) {  }
+// sequenza luci illuminate
+async function sequenzaLuci(){
+    
+    console.log('inizio luci in sequenza')
+
+    for ( let numero of sequenza ){
+        // await accendiSequenza(numero)
+    };
+
+    console.log('------------------------');
+    console.log('fine luci in sequenza');
+
+    // attivaInput()
+    
+    return true;
+}
 
 function animazioneIniziale(num){
 
