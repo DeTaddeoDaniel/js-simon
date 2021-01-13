@@ -4,18 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simon dice</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
+    
     <!-- jquery  cdn -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  
 
     <!-- bootstrap css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
+    <!-- bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    
+    <!-- foglio di stile -->
+    <link rel="stylesheet" href="style2.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="wrap">
+            <div class="gameContainer">
+
+                <!-- Titolo -->
+                <h1 class="text-center">Simon say</h1>
+
+                <div class="game">
+                    
+                    <!-- INSERIMENTO MODALITA DI GIOCO -->
+                    <div class="modal fade" id="modalModalita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-backdropper" role="document">
+                            <div class="modal-content bg-dark text-white">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Inserisi modalita di gioco</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="modal-body">
+                                    <p>Sono presenti due modalita:</p>
+                                    <ul>
+                                        <li><bold>Classica</bold>: aggiunge una nuova luce sulla sequenza precedente</li>
+                                        <li><bold>Avanzata</bold>: aggiunge una nuova luce sulla sequenza casuale nuova</li>
+                                    </ul>
+
+                                    <p>Ora seleziona la modalita per giocare</p>
+
+                                    <div class="btn-group btn-group-toggle btn-block" data-toggle="buttons" id="modalita">
+                                        
+                                        <label class="btn btn-info active" value='classica'>
+                                            <input type="radio" name="options" id="option1" checked > Classica
+                                        </label>
+                                        
+                                        <label class="btn btn-info" value="avanzata">
+                                            <input type="radio" name="options" id="option2" > Avanzata
+                                        </label>
+
+                                    </div>
+
+                                    <p>Poi premi continua per giocare</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger">Esci</button>
+                                    <button type="button" class="btn btn-success"  id='continue' data-dismiss="modal">Continua</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RUOTA DEI COLORI -->
+                    <div class="svg-box">
+                        <p class="center-game"></p>
+                        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+
+                            <!-- style -->
+                            <defs>
+                                
+                                <!-- center -->
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="250" cy="250" r="95" id="gradient-4">
+                                    <stop offset="0" style="stop-color: rgba(131, 115, 141, 1)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(79, 69, 85, 1)"></stop>
+                                </radialGradient>
+                                
+                                <!-- yellow -->
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="77.627" cy="128.96" r="81.04" id="gradient-1">
+                                    <stop offset="0" style="stop-color: rgba(230, 255, 0, 0.5)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(138, 153, 0, 0.5)"></stop>
+                                </radialGradient>
+                                
+                                <!-- green -->
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="239.707" cy="291.04" r="81.04" id="gradient-3">
+                                    <stop offset="0" style="stop-color: rgba(8, 255, 0, 0.5)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(5, 153, 0, 0.5)"></stop>
+                                </radialGradient>
+                                
+                                <!-- blue -->
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="77.627" cy="291.04" r="81.04" id="gradient-2">
+                                    <stop offset="0" style="stop-color: rgba(8, 0, 255, 0.5)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(5, 0, 153, 0.5)"></stop>
+                                </radialGradient>
+                                
+                                <!-- red -->
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="239.707" cy="128.96" r="81.04" id="gradient-0">
+                                    <stop offset="0" style="stop-color: rgba(255, 0, 0, 0.5)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(153, 0, 0, 0.5)"></stop>
+                                </radialGradient>
+
+                                <!-- active radiant -->
+                                <linearGradient id="gradient-5-active" bx:pinned="true">
+                                    <stop offset="0.652" style="stop-color: rgb(255, 0, 0);"></stop>
+                                </linearGradient>
+
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="77.627" cy="128.96" r="81.04" id="gradient-1-active">
+                                    <stop offset="0" style="stop-color: rgba(230, 255, 0, 1)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(138, 153, 0, 1)"></stop>
+                                </radialGradient>
+
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="239.707" cy="291.04" r="81.04" id="gradient-3-active">
+                                    <stop offset="0" style="stop-color: rgba(8, 255, 0, 1)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(5, 153, 0, 1)"></stop>
+                                </radialGradient>
+
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="77.627" cy="291.04" r="81.04" id="gradient-2-active">
+                                    <stop offset="0" style="stop-color: rgba(8, 0, 255, 1)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(5, 0, 153, 1)"></stop>
+                                </radialGradient>
+
+                                <radialGradient gradientUnits="userSpaceOnUse" cx="239.707" cy="128.96" r="81.04" id="gradient-0-active">
+                                    <stop offset="0" style="stop-color: rgba(255, 0, 0, 1)"></stop>
+                                    <stop offset="1" style="stop-color: rgba(153, 0, 0, 1)"></stop>
+                                </radialGradient>
+
+
+                            </defs>
+
+                            <circle 
+                                style="pointer-events: none"
+                                fill= rgb(3, 3, 3)
+                                cx="250" 
+                                cy="250" 
+                                r="250">
+                            </circle>
+                            
+                            <path 
+                                style="fill: url(#gradient-0);" 
+                                transform="matrix(1.357354, 0, 0, 1.357354, 44.632694, -45.044403)" d="M 158.667 47.92 A 162.08 162.08 0 0 1 320.747 210 L 232.954 210 A 74.287 74.287 0 0 0 158.667 135.713 Z" 
+                                role="button" 
+                                class="button-game red" 
+                                id="btnRed" 
+                                bx:shape="pie 158.667 210 74.287 162.08 0 90 1@126c8de3">
+                            </path>
+
+                            <path style="fill: url(#gradient-2);" transform="matrix(1.357354, 0, 0, 1.357354, 24.632647, -25.04431)" d="M 158.667 372.08 A 162.08 162.08 0 0 1 -3.413 210 L 84.38 210 A 74.287 74.287 0 0 0 158.667 284.287 Z" class="button-game blue" role="button" id="btnBlue" bx:shape="pie 158.667 210 74.287 162.08 180 270 1@061170ac" bx:origin="-1.127403 -0.11898"></path>
+                            
+                            <path style="fill: url(#gradient-1);" transform="matrix(1.357354, 0, 0, 1.357354, 44.632694, -25.044348)" d="M 320.747 210 A 162.08 162.08 0 0 1 158.667 372.08 L 158.667 284.287 A 74.287 74.287 0 0 0 232.954 210 Z" class="button-game green" role="button" id="btnGreen" bx:shape="pie 158.667 210 74.287 162.08 90 180 1@8c4206c3" bx:origin="-1.127403 -0.11898"></path>
+                            
+                            <path style="fill: url(#gradient-3);" d="M -3.413 210 A 162.08 162.08 0 0 1 158.667 47.92 L 158.667 135.713 A 74.287 74.287 0 0 0 84.38 210 Z" class="button-game yellow" role="button" transform="matrix(1.357354, 0, 0, 1.357354, 24.632648, -45.044403)" id="btnYellow" bx:shape="pie 158.667 210 74.287 162.08 270 360 1@5e2ec9df" bx:origin="0.499975 0.5"></path>
+                            
+                            <circle style="fill: rgb(44, 37, 47);" cx="250" cy="250" r="95" id="center"></circle>
+                        
+                        </svg>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>        
+    </div>
+
+
+    
+    
     <!-- modulo pagina -->
-    <script src="module.js"></script>
+    <script src="module2.js"></script>
 
 </body>
 </html>

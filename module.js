@@ -1,200 +1,197 @@
-// Un alert espone 5 numeri casuali.
-// Da li parte un timer di 30 secondi.
-// Dopo 30 secondi l'utente deve inserire un prompt
-// alla volta i numeri che ha visto precedentemente.
-// Dopo che sono stati inseriti i 5 numeri, il software
-// dice quanti e quali dei numeri da indovinare sono
-// stati individuati
+var btn_red = document.getElementById("red")
+var btn_green = document.getElementById("green")
+var btn_yellow = document.getElementById("yellow")
+var btn_blue = document.getElementById("blue")
 
-// array campo minato
-var arrayNumeriEstratti = [];
-var arrayNumeriInseriti = [];
-var arrayNumeriCorretti = [];
+var punti = document.getElementById("punteggio")
 
-var min = 1;
-var max = 100;
-var dimensione = 5;
+var sequenza = []
+var clickUtenteInseriti = []
 
-// genera numeri casuali con min e max complessi
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) ) + min;
-}
+// accendi lampadina
+function accendiLampadina( numero ){
 
-// genera array numeri random
-function generazioneNumeriRandom( dimensione){
+    console.log('---------------------------')
+    console.log('Accendo lampadina: '+numero)
 
-    var numeroRipetuto = false;
-    var numero = -1;
-
-    for (let i = 0; i < dimensione; i++) {
-
-        //genera numero casuale
-        numero = getRndInteger(min,max);
-
-        // inserisci numero array
-        addNumber(arrayNumeriEstratti, numero);  
-
-        // numero uscito
-        // console.log("- Numero estratto: " + numero);
-        
-    }
-}
-
-// alert numeri estratti
-function alertNumeriEstratti(){
-
-    console.log("Mostra alert dei numeri estratti");
-
-    var messaggio = " I numeri da memorizzare sono: ";
-
-    arrayNumeriEstratti.forEach(numero => {
-        messaggio = messaggio + numero + ", ";
-    });
-
-    alert(messaggio);
-
-}
-
-// inizia timer
-function timerAttesa(millisecondi){
-
-    console.log("Start countdown di " + millisecondi + " ms");
-    setTimeout(numeriUtente, millisecondi);
-
-}
-
-// numeri inseriti utente
-function numeriUtente(){
-
-    console.log("----------------");
-    console.log("inizio richiesta input giocatore");
-
-    for (let i = 0; i < dimensione; i++) {
-        
-        // inserisci numero
-         var numeroInserito = inputNumero(min , max);
-
-         // inserisci numero del array
-         addNumber(arrayNumeriInseriti, numeroInserito);
-
-         // numeri del giocatore
-         console.log("* il numero inserito è: " + arrayNumeriInseriti[i]);
-        
+    if(numero == 1){
+        btn_yellow.classList.add('active')
+    } else if(numero == 2){
+        btn_blue.classList.add('active')
+    } else if(numero == 4){
+        btn_red.classList.add('active')
+    } else if(numero == 3){
+        btn_green.classList.add('active')
     }
 
-    var punteggio = checkNumeriCorretti();
-    endGame(punteggio);
+}
+
+// spegni lampadina
+function spegniLampadina(numero,resolve){
+
+    console.log('Spengo lampadina: '+numero)
+
+    if(numero == 1){
+        btn_yellow.classList.remove('active')
+    } else if(numero == 2){
+        btn_blue.classList.remove('active')
+    } else if(numero == 4){
+        btn_red.classList.remove('active')
+    } else if(numero == 3){
+        btn_green.classList.remove('active')
+    }
+
+    setTimeout(resolve,600)
 
 }
 
-// richiedi numero utente
-function inputNumero(min, max){
+// accendi la sequenza di luci
+ async function accendiSequenza(numero){
 
-    var checkInput = false;
-    var numero = 0;
+     console.log('accendi sequenza')
 
-    console.log("----------------------");
+    return new Promise( (resolve, reject) => {
 
-    do{
-
-        numero = parseInt(prompt("Inserisci i numeri che ricordi uno alla volta"));
-
-        if( numero == false ){
-
-            /* input non valido */
-            console.log("Input non valido");
-            checkInput = false;
-
-        } else{
-
-            /* input valido*/
-            console.log("Input valido");
+             accendiLampadina(numero)
             
-            /* Valore tra min e max complessi*/
-            if(numero >= min && numero <= max ){
+            setTimeout( () => {
+                spegniLampadina(numero, resolve)
+            }, 1000)
+    })
 
-                console.log("Numero complesso tra " + min + " e " + max + " complesso: " + numero);
-                checkInput = true;
+}
 
-            } else{
+// sequenza luci illuminate
+async function sequenzaLuci(){
+    
+    console.log('inizio luci in sequenza')
 
-                console.log("Numero non complesso tra 1 e 100 complesso: " + numero);
+    for ( let numero of sequenza ){
+        await accendiSequenza(numero)
+    };
+
+    console.log('------------------------');
+    console.log('fine luci in sequenza');
+
+    attivaInput()
+    
+    return true;
+}
+
+// generatore numero random
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
+}
+
+// aggiunge un elemento alla sequenza
+async function allungaSequenza(){
+
+    var number = getRandomInt(1,4)
+    var sequenza = []
+
+    console.log('allunga sequenza')       
+    
+    sequenza.push(number)
+    console.log('sequenza: '+sequenza)
+
+     clickUtenteInseriti = []
+    
+    return await sequenzaLuci()
+
+}
+
+// Attivazioni input
+function disativaInput(){
+
+    console.log('--- disattiva input ---')
+
+    document.getElementById("green").removeEventListener("click", clickInput,false);
+    document.getElementById("red").removeEventListener("click", clickInput,false);
+    document.getElementById("yellow").removeEventListener("click", clickInput,false);
+    document.getElementById("blue").removeEventListener("click", clickInput,false);
+
+    document.getElementById("blue").classList.remove('mouse');  
+    document.getElementById("red").classList.remove('mouse'); 
+    document.getElementById("yellow").classList.remove('mouse'); 
+    document.getElementById("green").classList.remove('mouse');
+
+    document.getElementById("blue").classList.remove('active');  
+    document.getElementById("red").classList.remove('active'); 
+    document.getElementById("yellow").classList.remove('active'); 
+    document.getElementById("green").classList.remove('active');  
+}
+
+// Input utente
+function attivaInput(){
+
+    console.log('attivazione input')
+
+    document.getElementById("green").addEventListener("click", clickInput,false);  
+    document.getElementById("red").addEventListener("click", clickInput,false);  
+    document.getElementById("yellow").addEventListener("click", clickInput,false);  
+    document.getElementById("blue").addEventListener("click", clickInput,false);
+
+    document.getElementById("blue").classList.add('mouse');  
+    document.getElementById("red").classList.add('mouse'); 
+    document.getElementById("yellow").classList.add('mouse'); 
+    document.getElementById("green").classList.add('mouse'); 
+}
+
+// sequenza utente
+async function clickInput(e){
+    
+    console.log('**********************')
+
+    numeroLampadina = parseInt(e.target.getAttribute('value'))
+    console.log('numero lampadina click: '+numeroLampadina)
+    
+    clickUtenteInseriti.push(numeroLampadina)
+    
+    console.log('click utente array: '+clickUtenteInseriti)
+    console.log('sequenza: '+sequenza)
+
+    console.log('**********************')
+
+    if(clickUtenteInseriti.length ==  sequenza.length){
+        disativaInput()
+        checkinputUtente()
+    }
+}
+
+// controlla input utente
+async function checkinputUtente(){
+
+    let check = true;
+    let i=0;
+
+     console.log('checkinputUtente')
+
+
+        for( i=0; i<sequenza.length && check; i++){
+
+            console.log(sequenza)
+            console.log(clickUtenteInseriti)
+
+
+            if(sequenza[i] === clickUtenteInseriti[i]){
+                console.log('** ramo true **')
+                check = true;
+            } else {
+                console.log('** ramo false **')
+                check = false;
             }
+        }  
 
-        }
-
-        console.log("-------------");
-
-    } while( !checkInput)
-
-    return numero;
-
-}
-
-// aggiungi numeri estratti
-function addNumber(array, numero){
-
-    array.push(numero);
-    console.log(" - aggiunto numeri estratti: " + numero);
-    
-}
-
-// controlla quanti numeri sono corretti
-function checkNumeriCorretti(){
-
-    console.log("----------------");
-
-    var punteggio = 0;
-
-    for (let i = 0; i < dimensione; i++) {
-        
-        if(arrayNumeriInseriti[i] == arrayNumeriEstratti[i]) {
-            arrayNumeriCorretti[i] = arrayNumeriEstratti[i];
-            console.log("Numero corretto: " + arrayNumeriCorretti[i]);
-            punteggio++;
-        
-        } else {
-            console.log("Numero non corretto: "+ arrayNumeriInseriti[i]);
-        } 
-    
-    }
-
-    return punteggio;
-}
-
-// messaggio punti ottenuti
-function endGame(punteggio){
-
-    console.log("----------------");
-
-    console.log(" Hai totalizzato " + punteggio + " punti");
-    var messaggio = " Ti sei ricordato: ";
-    
-    if(punteggio != 0){
-        arrayNumeriCorretti.forEach(numero => {
-            messaggio = messaggio + numero + ", ";
-        });
-    
+    if(check){
+        console.log('** continua a giocare **')
+        punti.textContent = sequenza.length
+        await allungaSequenza()                
     } else {
-        messaggio = "Non ti sei ricordato alcun numero";
-    }
-
-    console.log(messaggio);
-
+        console.log('hai perso')
+        alert('hai perso'+sequenza+'-'+clickUtenteInseriti)
+    }    
 }
 
-// programma
-function programma(){
-
-    console.log("Crea numeri random");
-    generazioneNumeriRandom( dimensione);
-
-    console.log("----------------");
-    alertNumeriEstratti();
-
-    console.log("----------------");
-    timerAttesa(30000);
-
-}
-
-programma();
+allungaSequenza()

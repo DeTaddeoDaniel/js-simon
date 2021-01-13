@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <circle style="fill: rgb(216, 216, 216); pointer-events: none;" cx="250" cy="250" r="250"/>
+  <path style="fill: rgb(0, 242, 178);" transform="matrix(1.480751, 0, 0, 1.480751, 15.053671, -60.958076)" d="M 158.667 41.167 A 168.833 168.833 0 0 1 327.5 210 L 226.2 210 A 67.533 67.533 0 0 0 158.667 142.467 Z" role="button" class="button-game green" bx:shape="pie 158.667 210 67.533 168.833 0 90 1@a23fafc7"/>
+  <path style="fill: rgb(0, 153, 242);" transform="matrix(1.480752, 0, 0, 1.480752, 15.053514, -60.957726)" d="M 158.667 378.833 A 168.833 168.833 0 0 1 -10.166 210 L 91.134 210 A 67.533 67.533 0 0 0 158.667 277.533 Z" class="button-game" role="button" bx:shape="pie 158.667 210 67.533 168.833 180 270 1@6486749c" bx:origin="-1.127403 -0.11898"/>
+  <path style="fill: rgb(93, 0, 242);" transform="matrix(1.480752, 0, 0, 1.480752, 15.059702, -60.957726)" d="M 327.5 210 A 168.833 168.833 0 0 1 158.667 378.833 L 158.667 277.533 A 67.533 67.533 0 0 0 226.2 210 Z" class="button-game" role="button" bx:shape="pie 158.667 210 67.533 168.833 90 180 1@549e1cce" bx:origin="-1.127403 -0.11898"/>
+  <path style="fill: rgb(93, 0, 242);" transform="matrix(1.480752, 0, 0, 1.480752, 15.059695, -60.958115)" d="M -10.166 210 A 168.833 168.833 0 0 1 158.667 41.167 L 158.667 142.467 A 67.533 67.533 0 0 0 91.134 210 Z" class="button-game" role="button" bx:shape="pie 158.667 210 67.533 168.833 270 360 1@ea14ca58" bx:origin="-1.127403 -0.11898"/>
+  <circle style="fill: rgb(43, 30, 218);" cx="250" cy="250" r="100"/>
+</svg>
