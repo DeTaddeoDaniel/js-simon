@@ -38,3 +38,8 @@ body{
     left: 50%;
     transform: translate(-50%,-50%);
 }
+
+#btnRed:hover, #btnGreen:hover, #btnYellow:hover, #btnBlue:hover { 
+    stroke:red;
+    stroke-width: 3px;
+}

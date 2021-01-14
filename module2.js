@@ -6,17 +6,40 @@ var punteggio = 0
 
 $(document).ready(function () {
 
-    // ataring page
-    startingEvent('start');
+    // staring page
+    $('#modalModalitaWindows').modal('toggle');
+
+    $('#continue').click(function (e) {
+        modalita = ''
+        endGame = false;
+        sequenza = [];
+        clickUtenteInseriti = []
+        punteggio = 0
+        modalita = '';
+        preGame()
+        
+    });
+
+    $('#again').click(function (e) { 
+        endGame = false;
+        sequenza = [];
+        clickUtenteInseriti = []
+        punteggio = 0
+        preGame()
+    });
+
+    $('#changeModalita').click(function (e) { 
+        modalita = ''
+        endGame = false;
+        sequenza = [];
+        clickUtenteInseriti = []
+        punteggio = 0
+        modalita = '';
+        $('#modalModalitaWindows').modal('toggle');
+        
+    });
 
 });
-
-
-function startingEvent(info){
-    
-    preGame()  
-
-}
 
 
 async function preGame(){
@@ -108,6 +131,7 @@ async function clickInput(e){
             game();
         }
     } else {
+        rimuoviInput()
         $('.center-game').text('');
         $('#punteggio').text(punteggio);
         $('#livello').text(sequenza.length);
@@ -127,19 +151,20 @@ function attivaInput(){
 
     $('svg path').click((e) => { 
         // console.log(e.target)
-        e.preventDefault();
         clickInput(e)
     });
 
-    $('svg path').mouseenter( (e) => { 
-        // console.log('accendi lamp:' + $(e.target).attr('value') )
-        accendiLampadina($(e.target).attr('value'))
-    });
+    // $('svg path').mouseenter( (e) => { 
+    //     console.log('accendi lamp:' + $(e.target).attr('value') )
+    //     StrokeAccendiLampadina($(e.target).attr('value'))
+    // });
 
-    $('svg path').mouseout( (e) => { 
-        // console.log('spengo lamp: '+ $(e.target).attr('value'))
-        spegniLampadina($(e.target).attr('value'))
-    });
+    // $('svg path').mouseout( (e) => { 
+    //     console.log('spengo lamp: '+ $(e.target).attr('value'))
+    //     StrokeSpegniLampadina($(e.target).attr('value'))
+    // });
+
+
 
 }
 
@@ -215,7 +240,7 @@ function spegniLampadina(numero,resolve){
         $("#btnGreen").attr('style','fill: url(#gradient-1)')
     }
 
-    setTimeout(resolve,500)
+    setTimeout(resolve,1000)
 
 }
 
