@@ -32,12 +32,12 @@
                 <div class="game">
                     
                     <!-- INSERIMENTO MODALITA DI GIOCO -->
-                    <div class="modal fade" id="modalModalita" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-backdropper" role="document">
+                    <div class="modal fade" id="modalModalitaWindows" tabindex="-1" role="dialog" aria-labelledby="modalModalita" aria-hidden="true">
+                        <div class="modal-dialog modal-backdropper modal-dialog-centered" role="document">
                             <div class="modal-content bg-dark text-white">
 
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Inserisi modalita di gioco</h5>
+                                    <h5 class="modal-title">Premere la modalita di gioco</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                     </button>
@@ -68,8 +68,39 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger">Esci</button>
+                                    <button type="button" class="btn btn-success" >Esci</button>
                                     <button type="button" class="btn btn-success"  id='continue' data-dismiss="modal">Continua</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fine partita -->
+                    <div class="modal fade" id="endGameWindows" tabindex="-1" role="dialog"" aria-hidden="true">
+                        <div class="modal-dialog modal-backdropper modal-dialog-centered" role="document">
+                            <div class="modal-content bg-dark text-white">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Game over</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="modal-body text-center">
+
+                                    <p>Informazioni sulla partita:</p>
+                                    <p>Punteggio</p>
+                                    <p id="punteggio"></p>
+                                    <p>Livello</p>
+                                    <p id="livello"></p>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" id='changeModalita'>Cambia modalita</button>
+                                    <button type="button" class="btn btn-success"  id='again' >Rigioca</button>
                                 </div>
 
                             </div>
@@ -154,16 +185,17 @@
                                 style="fill: url(#gradient-0);" 
                                 transform="matrix(1.357354, 0, 0, 1.357354, 44.632694, -45.044403)" d="M 158.667 47.92 A 162.08 162.08 0 0 1 320.747 210 L 232.954 210 A 74.287 74.287 0 0 0 158.667 135.713 Z" 
                                 role="button" 
-                                class="button-game red" 
+                                class="button-game red " 
+                                value = 4
                                 id="btnRed" 
                                 bx:shape="pie 158.667 210 74.287 162.08 0 90 1@126c8de3">
                             </path>
 
-                            <path style="fill: url(#gradient-2);" transform="matrix(1.357354, 0, 0, 1.357354, 24.632647, -25.04431)" d="M 158.667 372.08 A 162.08 162.08 0 0 1 -3.413 210 L 84.38 210 A 74.287 74.287 0 0 0 158.667 284.287 Z" class="button-game blue" role="button" id="btnBlue" bx:shape="pie 158.667 210 74.287 162.08 180 270 1@061170ac" bx:origin="-1.127403 -0.11898"></path>
+                            <path style="fill: url(#gradient-2);" transform="matrix(1.357354, 0, 0, 1.357354, 24.632647, -25.04431)" d="M 158.667 372.08 A 162.08 162.08 0 0 1 -3.413 210 L 84.38 210 A 74.287 74.287 0 0 0 158.667 284.287 Z" class="button-game blue" value=2 role="button" id="btnBlue" bx:shape="pie 158.667 210 74.287 162.08 180 270 1@061170ac" bx:origin="-1.127403 -0.11898"></path>
                             
-                            <path style="fill: url(#gradient-1);" transform="matrix(1.357354, 0, 0, 1.357354, 44.632694, -25.044348)" d="M 320.747 210 A 162.08 162.08 0 0 1 158.667 372.08 L 158.667 284.287 A 74.287 74.287 0 0 0 232.954 210 Z" class="button-game green" role="button" id="btnGreen" bx:shape="pie 158.667 210 74.287 162.08 90 180 1@8c4206c3" bx:origin="-1.127403 -0.11898"></path>
+                            <path style="fill: url(#gradient-1);" transform="matrix(1.357354, 0, 0, 1.357354, 44.632694, -25.044348)" d="M 320.747 210 A 162.08 162.08 0 0 1 158.667 372.08 L 158.667 284.287 A 74.287 74.287 0 0 0 232.954 210 Z" class="button-game green" value=3 role="button" id="btnGreen" bx:shape="pie 158.667 210 74.287 162.08 90 180 1@8c4206c3" bx:origin="-1.127403 -0.11898"></path>
                             
-                            <path style="fill: url(#gradient-3);" d="M -3.413 210 A 162.08 162.08 0 0 1 158.667 47.92 L 158.667 135.713 A 74.287 74.287 0 0 0 84.38 210 Z" class="button-game yellow" role="button" transform="matrix(1.357354, 0, 0, 1.357354, 24.632648, -45.044403)" id="btnYellow" bx:shape="pie 158.667 210 74.287 162.08 270 360 1@5e2ec9df" bx:origin="0.499975 0.5"></path>
+                            <path style="fill: url(#gradient-3);" d="M -3.413 210 A 162.08 162.08 0 0 1 158.667 47.92 L 158.667 135.713 A 74.287 74.287 0 0 0 84.38 210 Z" class="button-game yellow" role="button" transform="matrix(1.357354, 0, 0, 1.357354, 24.632648, -45.044403)" id="btnYellow" value=1 bx:shape="pie 158.667 210 74.287 162.08 270 360 1@5e2ec9df" bx:origin="0.499975 0.5"></path>
                             
                             <circle style="fill: rgb(44, 37, 47);" cx="250" cy="250" r="95" id="center"></circle>
                         
