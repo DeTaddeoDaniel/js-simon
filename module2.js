@@ -123,6 +123,7 @@ async function clickInput(e){
 
         console.log('ancora player game'+checkinputUtente()+sequenza.length+clickUtenteInseriti.length)
         punteggio++
+        attivaInput()
 
         if(sequenza.length == clickUtenteInseriti.length){
             console.log('** continua a giocare **')  
@@ -150,7 +151,7 @@ function attivaInput(){
     $('.center-game').text('Sequenza');
 
     $('svg path').click((e) => { 
-        // console.log(e.target)
+        rimuoviInput()
         clickInput(e)
     });
 
