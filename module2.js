@@ -45,7 +45,6 @@ $(document).ready(function () {
 async function preGame(){
 
     // INPUT MODALITA DI GIOCO (CLASSICA, AVANZATA)
-
     modalita = $('#modalita .active').attr('value');
     console.log(modalita)
 
@@ -59,11 +58,6 @@ async function preGame(){
     console.log('sequenza: '+sequenza.toString())
 
     game()
-
-
-    // RISULTATI GIOCO ( PUNTI , RECORD, LIVELLO)
-
-
 }
 
 // round function
@@ -93,18 +87,11 @@ async function game(){
         console.log('sequenzautente: '+clickUtenteInseriti.toString())
         
         // accendi la sequenza
-        await sequenzaLuci(sequenza)
-
-        console.log('sequenza: '+sequenza.toString())
-        console.log('sequenzautente: '+clickUtenteInseriti.toString())
-        await attivaInput()
+        await sequenzaLuci(sequenza).then(attivaInput())
 }
 
-
-///////////////////////////////////////////////////////////////////////////////////////
-
 // sequenza utente
-async function clickInput(e){
+function clickInput(e){
     
     console.log('**********************')
 
@@ -141,36 +128,19 @@ async function clickInput(e){
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
-
 // Input utente
 function attivaInput(){
 
     console.log('attivazione input')
     $('.center-game').text('Sequenza');
 
+    // pulsanti colori
     $('svg path').click((e) => { 
         rimuoviInput()
         clickInput(e)
     });
 
-    // $('svg path').mouseenter( (e) => { 
-    //     console.log('accendi lamp:' + $(e.target).attr('value') )
-    //     StrokeAccendiLampadina($(e.target).attr('value'))
-    // });
-
-    // $('svg path').mouseout( (e) => { 
-    //     console.log('spengo lamp: '+ $(e.target).attr('value'))
-    //     StrokeSpegniLampadina($(e.target).attr('value'))
-    // });
-
-
-
 }
-
-///////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
 
 // rimuovi input
 function rimuoviInput(){
@@ -178,9 +148,7 @@ function rimuoviInput(){
     console.log('rimuovi input')
 
     $('svg path').off('click');
-
     $('svg path').off('mouseenter');
-
     $('svg path').off('mouseout');
 
     $("#btnYellow").attr('style','fill: url(#gradient-3)')
@@ -190,8 +158,6 @@ function rimuoviInput(){
 
 }
 
-///////////////////////////////////////////////////////////////////////////////////////
-
 // sequenza luci illuminate
 async function sequenzaLuci(sequenza){
 
@@ -199,11 +165,8 @@ async function sequenzaLuci(sequenza){
 
     for ( let numero of sequenza ){
         await accendiSequenza(numero)
-
-    // console.log('------------------------');
-    // console.log('fine luci in sequenza');
-
     }
+    // console.log('fine luci in sequenza');
 }
 
 // accendi lampadina
@@ -261,14 +224,14 @@ function spegniLampadina(numero,resolve){
     })
 
 }
-///////////////////////////////////////////////////////////////////////////////////////
+
 // controlla input utente
 function checkinputUtente(){
 
     let check = true;
     let num = clickUtenteInseriti.length-1
 
-     console.log('lungh: '+num+', sequenza: '+sequenza[num]+', click: '+clickUtenteInseriti[num])
+    console.log('lungh: '+num+', sequenza: '+sequenza[num]+', click: '+clickUtenteInseriti[num])
 
     if(sequenza[num] == clickUtenteInseriti[num]){
         check = true;
@@ -276,12 +239,10 @@ function checkinputUtente(){
         check = false;
     }
 
-    console.log('** '+check+' **')
+    // console.log('** '+check+' **')
     return check
 
 }
-
-/////////////////////////////////////////////////////////////////////////////////////// 
 
 // animazione partita
 function animazioneIniziale(num){
