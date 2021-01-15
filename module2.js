@@ -121,11 +121,13 @@ function clickInput(e){
         punteggio++
         attivaInput()
 
+        $('#punteggioAttuale').text(punteggio);
+
         // aggiorna progress bar valori
         $('.progress-bar .inseriti').text(clickUtenteInseriti.length);
         $('.progress-bar .totali').text(sequenza.length);
 
-        // rimozione css primo round con elementi non clicc
+        // rimozione css primo round con elementi non click
         $('.progress-bar').removeClass('first')
         $('.progress-bar').removeClass('bg-info');
         $('.progress-bar').addClass('bg-success');      
