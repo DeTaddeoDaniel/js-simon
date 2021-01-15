@@ -98,7 +98,9 @@ async function game(){
         console.log('modalita: '+modalita)
         console.log('sequenza: '+sequenza.toString())
         console.log('sequenzautente: '+clickUtenteInseriti.toString())
+
         attivaInput()
+        flashText('Ripeti la sequenza');
 }
 
 // sequenza utente

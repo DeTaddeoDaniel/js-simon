@@ -34,13 +34,36 @@ body{
 }
 
 .center-game{
-    font-size: 40px;
+    font-size: 18px;
     color: white;
     z-index: 3;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
+    text-align: center;
+    max-width: 200px;
+}
+
+@media(min-width: 350px){
+    .center-game{
+        font-size: 25px;
+        max-width: 200px;
+    }
+}
+
+@media(min-width: 450px){
+    .center-game{
+        font-size: 30px;
+        max-width: 200px;
+    }
+}
+
+@media(min-width: 550px){
+    .center-game{
+        font-size: 40px;
+        max-width: 200px;
+    }
 }
 
 #btnRed:hover, #btnGreen:hover, #btnYellow:hover, #btnBlue:hover { 
