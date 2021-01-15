@@ -10,20 +10,25 @@ $(document).ready(function () {
 
     $('#modalModalitaWindows').modal('toggle');
 
-    $('#continue').click(function (e) {
+    // event listener personalizzato
+    $('#continue').on("playGameStart", function(e , origin){
+        console.log('-- Event listern origine: '+ origin +'--');
         resetGameVariables();
         preGame().then(game);
-        
     });
 
+    // event listener playGameStart
+    $("#continue").click(function(){
+        $("#continue").trigger("playGameStart", ['module start']);
+    });
+    
     $('#again').click(function (e) { 
-        resetGameVariables();
-        preGame().then(game);
+        $("#continue").trigger("playGameStart", ['module end']);
     });
 
+    // modale inziale
     $('#changeModalita').click(function (e) { 
         $('#modalModalitaWindows').modal('toggle');
-        
     });
 
 });
@@ -187,10 +192,8 @@ function checkinputUtente(){
 function attivaInput(){
 
     console.log('attivazione input')
-    $('.center-game').text('Ripeti la sequenza');
 
-    // pulsanti colori
-    $('svg path').click((e) => { 
+    $('svg path').on('click', e => { 
         rimuoviInput()
         clickInput(e)
     });
@@ -303,4 +306,12 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; //Il max è escluso e il min è incluso
+}
+
+function refleshProgress(e, tipologia){
+    // $("svg path").trigger("refleshProgressBar", ['info']);
+
+    // $('svg path').on("refleshProgressBar", function(e , info){
+       //codice
+    // });
 }
