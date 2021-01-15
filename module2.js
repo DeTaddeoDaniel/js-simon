@@ -3,6 +3,7 @@ var endGame = false;
 var sequenza = [];
 var clickUtenteInseriti = []
 var punteggio = 0
+var best = 0
 
 $(document).ready(function () {
 
@@ -84,7 +85,7 @@ async function game(){
             }
         }
 
-        // operazioni
+        // operazioni css primo round
         $('.progress-bar').addClass('first');
         $('.progress-bar').removeClass('bg-success');
         $('.progress-bar').addClass('bg-info');
@@ -93,6 +94,7 @@ async function game(){
         console.log('sequenza: '+sequenza.toString())
         console.log('sequenzautente: '+clickUtenteInseriti.toString())
         
+        $('.center-game').text('memorizza');
         await sequenzaLuci(sequenza).then(attivaInput())
         $('.center-game').text('sequenza');
 }
@@ -107,6 +109,7 @@ function clickInput(e){
     console.log('click utente array: '+clickUtenteInseriti)
     console.log('sequenza: '+sequenza)
 
+    // progress bar click
     var progressNumber = (clickUtenteInseriti.length / sequenza.length) * 100;
     $('.progress-bar').attr('aria-valuenow', clickUtenteInseriti.length);
     $('.progress-bar').attr('aria-valuemax', sequenza.length);
@@ -118,9 +121,11 @@ function clickInput(e){
         punteggio++
         attivaInput()
 
+        // aggiorna progress bar valori
         $('.progress-bar .inseriti').text(clickUtenteInseriti.length);
         $('.progress-bar .totali').text(sequenza.length);
 
+        // rimozione css primo round con elementi non clicc
         $('.progress-bar').removeClass('first')
         $('.progress-bar').removeClass('bg-info');
         $('.progress-bar').addClass('bg-success');      
@@ -130,6 +135,7 @@ function clickInput(e){
             // console.log('** continua a giocare **')  
             clickUtenteInseriti = [] 
             
+            // reset progress bar
             $('.progress-bar .inseriti').text(0);
             $('.progress-bar .totali').text(sequenza.length+1);
 
@@ -137,10 +143,15 @@ function clickInput(e){
             game();
         }
     } else {
+
         $('.center-game').text('');
         $('#punteggio').text(punteggio);
         $('#livello').text(sequenza.length);
+        if(punteggio > best){
+            $('#best').text(punteggio);
+        }
         $("#endGameWindows").modal({backdrop: 'static'});
+        
         rimuoviInput()
     }
 
@@ -229,7 +240,6 @@ function spegniLampadina(numero,resolve){
  async function accendiSequenza(numero){
 
      console.log('accendi sequenza')
-     $('.center-game').text('Memorizza');
 
     return new Promise( (resolve, reject) => {
 
