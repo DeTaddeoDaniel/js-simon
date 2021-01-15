@@ -56,6 +56,7 @@ async function game(){
         // aggiorna livello attuale e prev
         $('.livelloNow').text(sequenza.length+1);
         $('.livelloNext').text(sequenza.length+2);
+        $('.progress-bar').attr('aria-valuenow', 0)
 
         // inserimento valori
         if(modalita == 'classica'){
