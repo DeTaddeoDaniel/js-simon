@@ -48,7 +48,6 @@ async function preGame(){
     modalita = $('#modalita .active').attr('value');
     console.log(modalita)
 
-
     for (let index = 5; index >= 0 ; index--) {
         // console.log('attesa numero: '+ index)
         await animazioneIniziale(index)        
@@ -62,6 +61,9 @@ async function preGame(){
 
 // round function
 async function game(){
+        
+        $('.livelloNow').text(sequenza.length+1);
+        $('.livelloNext').text(sequenza.length+2);
 
         // inserimento valori
         if(modalita == 'classica'){
@@ -82,48 +84,64 @@ async function game(){
             }
         }
 
+        // operazioni
+        $('.progress-bar').addClass('first');
+        $('.progress-bar').removeClass('bg-success');
+        $('.progress-bar').addClass('bg-info');
+
         // stampa sequenza
         console.log('sequenza: '+sequenza.toString())
         console.log('sequenzautente: '+clickUtenteInseriti.toString())
         
-        // accendi la sequenza
         await sequenzaLuci(sequenza).then(attivaInput())
+        $('.center-game').text('sequenza');
 }
 
 // sequenza utente
 function clickInput(e){
-    
-    console.log('**********************')
-
 
     numeroLampadina = parseInt(e.target.getAttribute('value'))
-    console.log('numero lampadina click: '+numeroLampadina)
-    
+    // console.log('numero lampadina click: '+numeroLampadina)
     clickUtenteInseriti.push(numeroLampadina)
     
     console.log('click utente array: '+clickUtenteInseriti)
     console.log('sequenza: '+sequenza)
 
-    console.log('**********************')
+    var progressNumber = (clickUtenteInseriti.length / sequenza.length) * 100;
+    $('.progress-bar').attr('aria-valuenow', clickUtenteInseriti.length);
+    $('.progress-bar').attr('aria-valuemax', sequenza.length);
+    $('.progress-bar').css('width', progressNumber+'%');
 
     if(checkinputUtente()){
 
-        console.log('ancora player game'+checkinputUtente()+sequenza.length+clickUtenteInseriti.length)
+        // console.log('ancora player game'+checkinputUtente()+sequenza.length+clickUtenteInseriti.length)
         punteggio++
         attivaInput()
 
+        $('.progress-bar .inseriti').text(clickUtenteInseriti.length);
+        $('.progress-bar .totali').text(sequenza.length);
+
+        $('.progress-bar').removeClass('first')
+        $('.progress-bar').removeClass('bg-info');
+        $('.progress-bar').addClass('bg-success');      
+
+
         if(sequenza.length == clickUtenteInseriti.length){
-            console.log('** continua a giocare **')  
+            // console.log('** continua a giocare **')  
             clickUtenteInseriti = [] 
+            
+            $('.progress-bar .inseriti').text(0);
+            $('.progress-bar .totali').text(sequenza.length+1);
+
             rimuoviInput()
             game();
         }
     } else {
-        rimuoviInput()
         $('.center-game').text('');
         $('#punteggio').text(punteggio);
         $('#livello').text(sequenza.length);
         $("#endGameWindows").modal({backdrop: 'static'});
+        rimuoviInput()
     }
 
 }
@@ -132,7 +150,6 @@ function clickInput(e){
 function attivaInput(){
 
     console.log('attivazione input')
-    $('.center-game').text('Sequenza');
 
     // pulsanti colori
     $('svg path').click((e) => { 
