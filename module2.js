@@ -4,44 +4,39 @@ var sequenza = [];
 var clickUtenteInseriti = []
 var punteggio = 0
 var best = 0
+var timerLampadina = 300;
 
 $(document).ready(function () {
 
-    // staring page
     $('#modalModalitaWindows').modal('toggle');
 
     $('#continue').click(function (e) {
-        modalita = ''
-        endGame = false;
-        sequenza = [];
-        clickUtenteInseriti = []
-        punteggio = 0
-        modalita = '';
-        preGame()
+        resetGameVariables();
+        preGame().then(game);
         
     });
 
     $('#again').click(function (e) { 
-        endGame = false;
-        sequenza = [];
-        clickUtenteInseriti = []
-        punteggio = 0
-        preGame()
+        resetGameVariables();
+        preGame().then(game);
     });
 
     $('#changeModalita').click(function (e) { 
-        modalita = ''
-        endGame = false;
-        sequenza = [];
-        clickUtenteInseriti = []
-        punteggio = 0
-        modalita = '';
         $('#modalModalitaWindows').modal('toggle');
         
     });
 
 });
 
+//Se cambiamo modalitÃ  o decidiamo di ricominciare, resettiamo le variabili
+function resetGameVariables()
+{
+    endGame = false;
+    sequenza = [];
+    clickUtenteInseriti = []
+    punteggio = 0   
+
+}
 
 async function preGame(){
 
@@ -53,16 +48,12 @@ async function preGame(){
         // console.log('attesa numero: '+ index)
         await animazioneIniziale(index)        
     }
-
-
-    console.log('sequenza: '+sequenza.toString())
-
-    game()
 }
 
 // round function
 async function game(){
         
+        // aggiorna livello attuale e prev
         $('.livelloNow').text(sequenza.length+1);
         $('.livelloNext').text(sequenza.length+2);
 
@@ -70,14 +61,14 @@ async function game(){
         if(modalita == 'classica'){
 
             console.log('game modalità classica')
-            var number = getRandomInt(1,4)
+            const number = getRandomInt(1,4)
             sequenza.push(number)
 
         
         } else {
             console.log('game modalita avanzata')
             
-            var livello = sequenza.length
+            const livello = sequenza.length
             sequenza = []
             for (let index = 0; index < livello + 1; index++) {
                 var number = getRandomInt(1,4)
@@ -86,72 +77,90 @@ async function game(){
         }
 
         // operazioni css primo round
-        $('.progress-bar').addClass('first');
-        $('.progress-bar').removeClass('bg-success');
-        $('.progress-bar').addClass('bg-info');
+        $('.progress-bar')
+            .addClass('first')
+            .removeClass('bg-success')
+            .addClass('bg-info');
 
-        // stampa sequenza
+        // accendi la sequenza
+        await flashText('Memorizza la sequenza');
+        await sequenzaLuci(sequenza)
+        await flashText('');
+
+        
+        // accendi la sequenza
+        console.log('modalita: '+modalita)
         console.log('sequenza: '+sequenza.toString())
         console.log('sequenzautente: '+clickUtenteInseriti.toString())
-        
-        $('.center-game').text('memorizza');
-        await sequenzaLuci(sequenza).then(attivaInput())
-        $('.center-game').text('sequenza');
+        attivaInput()
 }
 
 // sequenza utente
-function clickInput(e){
+async function clickInput(e){
 
     numeroLampadina = parseInt(e.target.getAttribute('value'))
-    // console.log('numero lampadina click: '+numeroLampadina)
-    clickUtenteInseriti.push(numeroLampadina)
+    console.log('numero lampadina click: '+numeroLampadina)
     
-    console.log('click utente array: '+clickUtenteInseriti)
-    console.log('sequenza: '+sequenza)
+    clickUtenteInseriti.push( numeroLampadina )
 
     // progress bar click
     var progressNumber = (clickUtenteInseriti.length / sequenza.length) * 100;
-    $('.progress-bar').attr('aria-valuenow', clickUtenteInseriti.length);
-    $('.progress-bar').attr('aria-valuemax', sequenza.length);
-    $('.progress-bar').css('width', progressNumber+'%');
+    $('.progress-bar')
+        .attr('aria-valuenow', clickUtenteInseriti.length)
+        .attr('aria-valuemax', sequenza.length)
+        .css('width', progressNumber+'%');
+
+    console.log('sequenza: '+sequenza.toString())
+    console.log('sequenzautente: '+clickUtenteInseriti.toString())
 
     if(checkinputUtente()){
 
-        // console.log('ancora player game'+checkinputUtente()+sequenza.length+clickUtenteInseriti.length)
+        console.log(
+            'ancora player game'+
+            checkinputUtente()+
+            sequenza.length+
+            clickUtenteInseriti.length)
+
         punteggio++
         attivaInput()
 
+        // aggiorna valori
         $('#punteggioAttuale').text(punteggio);
-
-        // aggiorna progress bar valori
         $('.progress-bar .inseriti').text(clickUtenteInseriti.length);
         $('.progress-bar .totali').text(sequenza.length);
 
         // rimozione css primo round con elementi non click
-        $('.progress-bar').removeClass('first')
-        $('.progress-bar').removeClass('bg-info');
-        $('.progress-bar').addClass('bg-success');      
+        $('.progress-bar')
+            .removeClass('first')
+            .removeClass('bg-info')
+            .addClass('bg-success');      
 
 
         if(sequenza.length == clickUtenteInseriti.length){
-            // console.log('** continua a giocare **')  
-            clickUtenteInseriti = [] 
+            
+            console.log('** continua a giocare **')  ;
+            clickUtenteInseriti = [] ;
             
             // reset progress bar
             $('.progress-bar .inseriti').text(0);
             $('.progress-bar .totali').text(sequenza.length+1);
 
+            await flashText('Bravo');
             rimuoviInput()
+            await flashText('');
             game();
         }
+
     } else {
 
         $('.center-game').text('');
         $('#punteggio').text(punteggio);
         $('#livello').text(sequenza.length);
+        
         if(punteggio > best){
             $('#best').text(punteggio);
         }
+
         $("#endGameWindows").modal({backdrop: 'static'});
         
         rimuoviInput()
@@ -159,10 +168,25 @@ function clickInput(e){
 
 }
 
+// controlla input utente
+function checkinputUtente(){
+
+    let num = clickUtenteInseriti.length-1
+
+    // console.log('lungh: '+num+', sequenza: '+sequenza[num]+', click: '+clickUtenteInseriti[num])
+
+    if(sequenza[num] == clickUtenteInseriti[num]){
+        return true;
+    } else {
+        return false;
+    }
+}
+
 // Input utente
 function attivaInput(){
 
     console.log('attivazione input')
+    $('.center-game').text('Ripeti la sequenza');
 
     // pulsanti colori
     $('svg path').click((e) => { 
@@ -191,21 +215,23 @@ function rimuoviInput(){
 // sequenza luci illuminate
 async function sequenzaLuci(sequenza){
 
-    console.log('inizio luci in sequenza'+sequenza.toString())
-
     for ( let numero of sequenza ){
         await accendiSequenza(numero)
     }
-    // console.log('fine luci in sequenza');
+}
+
+// accendi la sequenza di luci
+ async function accendiSequenza(numero){
+
+    console.log('accendi sequenza');
+    
+    await accendiLampadina( numero )
+    await spegniLampadina( numero )      
+
 }
 
 // accendi lampadina
 function accendiLampadina( numero ){
-
-    // console.log('---------------------------')
-    // console.log('Accendo lampadina: '+numero)
-
-    // console.log($("#btnYellow").attr('style'))
 
     if(numero == 1){
         $("#btnYellow").attr('style','fill: url(#gradient-3-active)')
@@ -217,10 +243,12 @@ function accendiLampadina( numero ){
        $("#btnGreen").attr('style','fill: url(#gradient-1-active)')
     }
 
+    return new Promise(resolve => setTimeout( resolve, timerLampadina ));
+
 }
 
 // spegni lampadina
-function spegniLampadina(numero,resolve){
+function spegniLampadina(numero){
 
     // console.log('Spengo lampadina: '+numero)
 
@@ -234,43 +262,13 @@ function spegniLampadina(numero,resolve){
         $("#btnGreen").attr('style','fill: url(#gradient-1)')
     }
 
-    setTimeout(resolve,1000)
+    return new Promise(resolve => setTimeout( resolve, timerLampadina ));
 
 }
 
-// accendi la sequenza di luci
- async function accendiSequenza(numero){
-
-     console.log('accendi sequenza')
-
-    return new Promise( (resolve, reject) => {
-
-             accendiLampadina(numero)
-            
-            setTimeout( () => {
-                spegniLampadina(numero, resolve)
-            }, 1000)
-    })
-
-}
-
-// controlla input utente
-function checkinputUtente(){
-
-    let check = true;
-    let num = clickUtenteInseriti.length-1
-
-    console.log('lungh: '+num+', sequenza: '+sequenza[num]+', click: '+clickUtenteInseriti[num])
-
-    if(sequenza[num] == clickUtenteInseriti[num]){
-        check = true;
-    } else {
-        check = false;
-    }
-
-    // console.log('** '+check+' **')
-    return check
-
+async function flashText( text ){
+    $('.center-game').text( text );
+    return new Promise(resolve => setTimeout( resolve, 1000 ));
 }
 
 // animazione partita
@@ -278,18 +276,23 @@ function animazioneIniziale(num){
 
     // console.log('animazione iniziale: '+num)
 
-    if(num == 5){
-       console.log('wait 1 s')
-    } else if(num == 0){
-        $('.center-game').text('');
-    } else if(num != 1){
-        $('.center-game').text(num-1);
-    } else {
-        $('.center-game').text('Start');
-    }
+     switch(num){
 
-    return new Promise( (resolve, reject) => {
-        setTimeout( () => { resolve(); }, 1000);
+        case 0:
+            $('.center-game').text('');
+            break;
+
+        case 1:
+
+            $('.center-game').text('Start');
+            break;
+
+        default:
+            $('.center-game').text( num-1 );
+    } 
+
+    return new Promise( (resolve) => {
+        setTimeout( resolve, 1000 );
     });
 
 }
